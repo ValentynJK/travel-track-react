@@ -7,7 +7,6 @@ import { dirname } from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-
 // utilities
 import { getPhoto } from './modules/photo.js';
 import { getPlaces } from './modules/places.js';
@@ -41,7 +40,6 @@ const options = {
     Authorization: API
   }
 };
-
 
 // api to get places array
 // to be rewritten in post request which receives city Name

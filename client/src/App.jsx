@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       <p>
-        {!data ? "Loading..." : data}
+        {!data ? "Loading..." : data.toUpperCase()}
       </p>
       <Routes>
         <Route path='/' element={<HomePage />} />

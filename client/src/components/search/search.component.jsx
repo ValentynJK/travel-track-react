@@ -11,6 +11,7 @@ import { PlacesContext } from '../../contexts/places.context';
 
 // utilities
 import { getPlaces } from '../../utils/search-for-places';
+import { getForecast } from '../../utils/search-for-forecast';
 
 //styles
 import './search.styles.scss';
@@ -30,17 +31,19 @@ const Search = () => {
     setInputField({ ...inputField, [name]: value });
   };
 
+  // places context
+  // initial places state is sessionStorage.getItem('places')
+  const { setPlaces, setPhotos, setForecast, forecast } = useContext(PlacesContext);
+
   // button's onClick handler 
   const onClickHandler = () => {
     sessionStorage.clear();
     setPhotos([]);
     setPlaces([]);
-    refetch();
+    setForecast({});
+    placesRefetch();
+    weatherRefetch();
   }
-
-  // places context
-  // initial places state is sessionStorage.getItem('places')
-  const { setPlaces, setPhotos } = useContext(PlacesContext);
 
   // support function to fetch places from server
   const fetchPlaces = async () => {
@@ -48,36 +51,66 @@ const Search = () => {
     return response;
   };
 
-  // initialling useQuery
-  const { isLoading, isError, data, error, refetch, isFetching } = useQuery('places', fetchPlaces, { enabled: false });
+  // support function to fetch forecast from server
+  const fetchForecast = async () => {
+    const response = await getForecast(cityName);
+    return response;
+  };
+
+
+  // initialling useQuery fot foursquare query
+  const { isLoading: weatherIsLoading, isError: weatherIsError, data: weatherData, error: weatherError, refetch: weatherRefetch, isFetching: weatherIsFetching } = useQuery('weather', fetchForecast, { enabled: false });
+
+  // initialling useQuery fot places query
+  const { isLoading: placesIsLoading, isError: placesIsError, data: placesData, error: placesError, refetch: placesRefetch, isFetching: placesIsFetching } = useQuery('places', fetchPlaces, { enabled: false });
 
   // setting places data to the context and to the sessionStorage
   useEffect(() => {
-    if (data) {
-      setPlaces(data);
-      sessionStorage.setItem('places', JSON.stringify(data));
+    console.log(placesData)
+    if (placesData) {
+      setPlaces(placesData);
+      sessionStorage.setItem('places', JSON.stringify(placesData));
     }
-  }, [data, setPlaces]);
+  }, [placesData, setPlaces]);
+
+  // setting forecast data to the context 
+  useEffect(() => {
+    if (weatherData) {
+      setForecast(weatherData);
+      sessionStorage.setItem('forecast', JSON.stringify(weatherData));
+    }
+  }, [weatherData, setForecast]);
 
   return (
-    <div className="search-container">
-      <InputForm
-        label='City'
-        type='text'
-        required
-        onChange={handleChange}
-        name='cityName'
-        value={cityName}
-      />
-      <Button onClick={onClickHandler} children={'Search'} />
-      {
-        isLoading ? (
-          <span>Loading...be patient...</span>
-        ) : isError ? (
-          <span>Oops, something went wrong, please check your city and try again)) {error.message}</span>
-        ) : (
-          <div>{isFetching ? 'Fetching...' : null}</div>
-        )}
+    <div className="search">
+
+      <div className="search-container">
+        <InputForm
+          label='City'
+          type='text'
+          required
+          onChange={handleChange}
+          name='cityName'
+          value={cityName}
+        />
+        <Button onClick={onClickHandler} children={'Search'} />
+        {
+          placesIsLoading ? (
+            <span>Loading...be patient...</span>
+          ) : placesIsError ? (
+            <span>Oops, something went wrong, please check your city and try again)) {placesError.message}</span>
+          ) : (
+            <div>{placesIsFetching ? 'Fetching...' : null}</div>
+          )}
+        {
+          weatherIsLoading ? (
+            <span>Weather Loading...be patient...</span>
+          ) : weatherIsError ? (
+            <span>Oops, something went wrong with forecast, please check your city and try again)) {weatherError.message}</span>
+          ) : (
+            <div>{weatherIsFetching ? 'Fetching...' : null}</div>
+          )}
+      </div>
     </div>
   )
 };

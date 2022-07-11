@@ -6,7 +6,9 @@ export const PlacesContext = createContext({
   photos: [],
   setPhotos: () => { },
   tips: [],
-  setTips: () => { }
+  setTips: () => { },
+  forecast: {},
+  setForecast: () => { }
 });
 
 export const PlacesProvider = ({ children }) => {
@@ -19,9 +21,13 @@ export const PlacesProvider = ({ children }) => {
     return placesInLocalStorage ? JSON.parse(placesInLocalStorage) : []
   });
   const [tips, setTips] = useState([]);
+  const [forecast, setForecast] = useState(
+    () => {
+      const forecastInLocalStorage = sessionStorage.getItem('forecast');
+      return forecastInLocalStorage ? JSON.parse(forecastInLocalStorage) : {}
+    });
 
-  const value = { places, setPlaces, photos, setPhotos, tips, setTips };
-  // console.log("PlaceContext")
+  const value = { places, setPlaces, photos, setPhotos, tips, setTips, forecast, setForecast };
 
   return (
     <PlacesContext.Provider value={value}>{children}</PlacesContext.Provider>

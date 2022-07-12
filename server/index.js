@@ -1,4 +1,4 @@
-express
+// express
 import express from 'express';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
@@ -45,8 +45,8 @@ const options = {
 
 // api to get places array
 app.post('/places_api', async (request, response) => {
-  const city = await request.body.cityName;
-  const places = await getPlaces(city, options);
+  const req = await request.body;
+  const places = await getPlaces(req.cityName, req.category, options);
   console.log('places API called'); // to check during test
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
   response.json(places);

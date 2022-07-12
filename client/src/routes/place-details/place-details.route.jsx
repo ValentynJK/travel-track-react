@@ -5,8 +5,11 @@ import { useContext, useEffect } from 'react';
 import { PlacesContext } from '../../contexts/places.context';
 import { getPlaceTips } from '../../utils/search-for-tips';
 
-import './place-details.styles.scss';
+// components
 import Tip from '../../components/tip/tip.component';
+import Button from '../../components/button/button.component'
+
+import './place-details.styles.scss';
 
 const PlaceDetails = () => {
 
@@ -22,6 +25,13 @@ const PlaceDetails = () => {
   // getting placeDetails
   const placeDetails = places.find(place => place.fsq_id === fsq_id);
   const { categories, location, name, geocodes } = placeDetails;
+
+  // go to google map handler
+  const goToMap = () => {
+    const linkToMap = `https://maps.google.com/?q=${geocodes && geocodes.main.latitude},${geocodes && geocodes.main.longitude}`;
+    return window.open(linkToMap)
+  }
+
 
   // CHANGE THIS TO useQuery
   const getTipsHandler = async () => {
@@ -44,7 +54,7 @@ const PlaceDetails = () => {
         <span className='address'>ADDRESS: {placeDetails && location.formatted_address}</span>
 
         <div className='location' >
-          <a target="_blank" rel="noreferrer" href={`https://maps.google.com/?q=${geocodes && geocodes.main.latitude},${geocodes && geocodes.main.longitude}`}>Link</a>
+          <Button type='submit' children={'See on map'} buttonType='inverted' onClick={goToMap} />
 
         </div>
         <div className='tips-container'>

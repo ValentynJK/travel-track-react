@@ -12,19 +12,22 @@ import { PlacesContext } from '../../contexts/places.context';
 // utilities
 import { getPlaces } from '../../utils/search-for-places';
 import { getForecast } from '../../utils/search-for-forecast';
+import { CATEGORIES } from '../../data/categories'
 
 //styles
 import './search.styles.scss';
 
 const defaultInputFields = {
-  cityName: ''
+  cityName: '',
+  category: ''
 }
 
 const Search = () => {
 
   // handle input fields
   const [inputField, setInputField] = useState(defaultInputFields);
-  const { cityName } = inputField;
+  const { cityName, category } = inputField;
+  // console.log(category, cityName)
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -33,10 +36,10 @@ const Search = () => {
 
   // places context
   // initial places state is sessionStorage.getItem('places')
-  const { setPlaces, setPhotos, setForecast, forecast } = useContext(PlacesContext);
+  const { setPlaces, setPhotos, setForecast } = useContext(PlacesContext);
 
   // button's onClick handler 
-  const onClickHandler = () => {
+  const onClickHandler = async () => {
     sessionStorage.clear();
     setPhotos([]);
     setPlaces([]);
@@ -47,7 +50,7 @@ const Search = () => {
 
   // support function to fetch places from server
   const fetchPlaces = async () => {
-    const response = await getPlaces(cityName);
+    const response = await getPlaces(cityName, category);
     return response;
   };
 
@@ -57,7 +60,6 @@ const Search = () => {
     return response;
   };
 
-
   // initialling useQuery fot foursquare query
   const { isLoading: weatherIsLoading, isError: weatherIsError, data: weatherData, error: weatherError, refetch: weatherRefetch, isFetching: weatherIsFetching } = useQuery('weather', fetchForecast, { enabled: false });
 
@@ -66,7 +68,6 @@ const Search = () => {
 
   // setting places data to the context and to the sessionStorage
   useEffect(() => {
-    console.log(placesData)
     if (placesData) {
       setPlaces(placesData);
       sessionStorage.setItem('places', JSON.stringify(placesData));
@@ -93,6 +94,16 @@ const Search = () => {
           name='cityName'
           value={cityName}
         />
+        <div className='group'>
+
+          <label htmlFor='category'></label>
+          <select className='form-input' name="category" id="category" onChange={handleChange} defaultValue={'default'}>
+            <option value={'default'} disabled>Select a category</option>
+            {Object.keys(CATEGORIES).map(category => (
+              <option key={category} value={CATEGORIES[category]}>{category}</option>
+            ))}
+          </select>
+        </div>
         <Button onClick={onClickHandler} children={'Search'} />
         {
           placesIsLoading ? (

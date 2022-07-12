@@ -9,8 +9,6 @@ import PlaceDetails from './routes/place-details/place-details.route'
 // style
 import './App.css';
 
-
-
 function App() {
 
   // Check from server
@@ -30,8 +28,6 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path="/:fsq_id" element={<PlaceDetails />} />
       </Routes>
-
-
     </div>
   );
 }

@@ -6,13 +6,22 @@
   gap: 30px;
   text-align: start;
   font-size: 1.25rem;
+  line-height: 40px;
 
   .place-name {
     font-size: 2.5rem;
+  }
+
+  h2 {
+    margin: 0 0 20px 0;
   }
 }
 
 .place-details-text-container {
   width: 60%;
 
+}
+
+.location {
+  margin: 20px 0;
 }

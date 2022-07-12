@@ -1,8 +1,8 @@
 // api fetch post request to back end. Result is place array with photo link
 
-export const getPlaces = async (cityName) => {
+export const getPlaces = async (cityName, category) => {
 
-  const data = { cityName };
+  const data = { cityName, category };
   const options = {
     method: 'POST',
     headers: {

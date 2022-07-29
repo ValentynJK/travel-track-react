@@ -1,0 +1,5 @@
+const FORECAST_ACTION_TYPES = {
+  SET_FORECAST: 'forecast/SET_FORECAST'
+};
+
+export default FORECAST_ACTION_TYPES;

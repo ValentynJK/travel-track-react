@@ -1,0 +1,1 @@
+export const selectForecast = (state) => state.forecast.forecast;

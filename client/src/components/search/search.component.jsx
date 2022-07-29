@@ -1,6 +1,7 @@
-// react
+// react, redux
 import { useEffect, useState, useContext } from 'react';
 import { useQuery } from 'react-query';
+import { useDispatch } from 'react-redux';
 
 // components
 import InputForm from '../input-form/input-form.component';
@@ -12,7 +13,10 @@ import { PlacesContext } from '../../contexts/places.context';
 // utilities
 import { getPlaces } from '../../utils/search-for-places';
 import { getForecast } from '../../utils/search-for-forecast';
-import { CATEGORIES } from '../../data/categories'
+import { CATEGORIES } from '../../data/categories';
+
+// store actions
+import { setForecastRedux } from '../../store/forecast/forecast.action';
 
 //styles
 import './search.styles.scss';
@@ -24,10 +28,11 @@ const defaultInputFields = {
 
 const Search = () => {
 
+  const dispatch = useDispatch(); // initializes dispatch method
+
   // handle input fields
   const [inputField, setInputField] = useState(defaultInputFields);
   const { cityName, category } = inputField;
-  // console.log(category, cityName)
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -78,6 +83,7 @@ const Search = () => {
   useEffect(() => {
     if (weatherData) {
       setForecast(weatherData);
+      dispatch(setForecastRedux(weatherData));
       sessionStorage.setItem('forecast', JSON.stringify(weatherData));
     }
   }, [weatherData, setForecast]);

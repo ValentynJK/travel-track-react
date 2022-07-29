@@ -1,14 +1,15 @@
-// react
-import { useContext } from 'react';
-
+// react, redux
+// import { useContext } from 'react';
+import { useSelector } from 'react-redux';
 // context
-import { PlacesContext } from '../../contexts/places.context';
-
+// import { PlacesContext } from '../../contexts/places.context';
+// store selectors
+import { selectForecast } from '../../store/forecast/forecast.selector';
+// styling
 import './forecast.styles.scss';
 
 const Forecast = () => {
-
-  const { forecast } = useContext(PlacesContext);
+  const forecast = useSelector(selectForecast); // select forecast from the store
 
   // to check if forecast ready to be rendered
   const isForecast = () => {
@@ -37,7 +38,7 @@ const Forecast = () => {
           </div>
           <div className='additional-data-container'>
             <span>Max temperature: {kelvinToCelsius(forecast.main.temp_max)}&deg;C </span>
-            <span>Max temperature: {kelvinToCelsius(forecast.main.temp_min)}&deg;C </span>
+            <span>Min temperature: {kelvinToCelsius(forecast.main.temp_min)}&deg;C </span>
             <span>Humidity: {forecast.main.humidity} &#37; </span>
             <span>Wind: {forecast.wind.speed} km/h </span>
           </div>

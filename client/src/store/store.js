@@ -6,6 +6,8 @@ import {
 } from 'redux-persist';
 import storageSession from 'redux-persist/lib/storage/session'; // sessionStorage
 import { rootReducer } from './root-reducer';
+import thunk from 'redux-thunk'; // fora async actions
+
 
 // persistor configuration
 const persistConfig = {
@@ -18,7 +20,7 @@ const persisterReducer = persistReducer(persistConfig, rootReducer);
 
 // for catching state before hitting reducer
 // process.env.NODE_ENV === 'development' for not logging in production mode
-const middleWares = [process.env.NODE_ENV !== 'production' && logger].filter(Boolean);
+const middleWares = [process.env.NODE_ENV !== 'production' && logger, thunk].filter(Boolean);
 
 // creates middleware: redux-logger
 const composeEnhancers = compose(applyMiddleware(...middleWares));

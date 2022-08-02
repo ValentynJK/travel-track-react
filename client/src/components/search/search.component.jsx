@@ -16,7 +16,7 @@ import { getForecast } from '../../utils/search-for-forecast';
 import { CATEGORIES } from '../../data/categories';
 
 // store actions
-import { setForecastRedux } from '../../store/forecast/forecast.action';
+import { fetchForecastAsync, setForecastRedux } from '../../store/forecast/forecast.action';
 
 //styles
 import './search.styles.scss';
@@ -45,12 +45,13 @@ const Search = () => {
 
   // button's onClick handler 
   const onClickHandler = async () => {
+    if (!cityName) return; // prevents api call without city name
     sessionStorage.clear();
     setPhotos([]);
     setPlaces([]);
-    setForecast({});
+    // setForecast({});
     placesRefetch();
-    weatherRefetch();
+    dispatch(fetchForecastAsync(cityName))
   }
 
   // support function to fetch places from server
@@ -58,15 +59,6 @@ const Search = () => {
     const response = await getPlaces(cityName, category);
     return response;
   };
-
-  // support function to fetch forecast from server
-  const fetchForecast = async () => {
-    const response = await getForecast(cityName);
-    return response;
-  };
-
-  // initialling useQuery fot foursquare query
-  const { isLoading: weatherIsLoading, isError: weatherIsError, data: weatherData, error: weatherError, refetch: weatherRefetch, isFetching: weatherIsFetching } = useQuery('weather', fetchForecast, { enabled: false });
 
   // initialling useQuery fot places query
   const { isLoading: placesIsLoading, isError: placesIsError, data: placesData, error: placesError, refetch: placesRefetch, isFetching: placesIsFetching } = useQuery('places', fetchPlaces, { enabled: false });
@@ -78,15 +70,6 @@ const Search = () => {
       sessionStorage.setItem('places', JSON.stringify(placesData));
     }
   }, [placesData, setPlaces]);
-
-  // setting forecast data to the context 
-  useEffect(() => {
-    if (weatherData) {
-      setForecast(weatherData);
-      dispatch(setForecastRedux(weatherData));
-      sessionStorage.setItem('forecast', JSON.stringify(weatherData));
-    }
-  }, [weatherData, setForecast]);
 
   return (
     <div className="search">
@@ -119,14 +102,7 @@ const Search = () => {
           ) : (
             <div>{placesIsFetching ? 'Fetching...' : null}</div>
           )}
-        {
-          weatherIsLoading ? (
-            <span>Weather Loading...be patient...</span>
-          ) : weatherIsError ? (
-            <span>Oops, something went wrong with forecast, please check your city and try again)) {weatherError.message}</span>
-          ) : (
-            <div>{weatherIsFetching ? 'Fetching...' : null}</div>
-          )}
+
       </div>
     </div>
   )

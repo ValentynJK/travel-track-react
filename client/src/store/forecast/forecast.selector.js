@@ -1,1 +1,1 @@
-export const selectForecast = (state) => state.forecast.forecast;
+export const selectForecast = (state) => state.forecast; // selects forecast state object  

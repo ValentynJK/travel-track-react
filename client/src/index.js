@@ -3,24 +3,25 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
-
+// redux and redux-persistor
+import { store, persistor } from './store/store'; // general redux store and persistor
+import { Provider } from 'react-redux'; // redux provider
+import { PersistGate } from 'redux-persist/integration/react'; // redux-persist provider
 // components
 import App from './App';
-
-// provider
-import { PlacesProvider } from './contexts/places.context';
-
 // general styles
 import './index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <PlacesProvider>
-        <App />
-      </PlacesProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </PersistGate>
+    </Provider>
   </React.StrictMode>
 );
 

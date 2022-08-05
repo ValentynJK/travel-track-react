@@ -1,65 +1,99 @@
+// react, redux
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useContext, useEffect } from 'react';
-
-// contexts
-import { PlacesContext } from '../../contexts/places.context';
-import { getPlaceTips } from '../../utils/search-for-tips';
-
+import { useDispatch, useSelector } from 'react-redux';
 // components
 import Tip from '../../components/tip/tip.component';
-import Button from '../../components/button/button.component'
-
+import Button from '../../components/button/button.component';
+import Spinner from '../../components/spinner/spinner.component';
+// selectors
+import { selectTips } from '../../store/tips/tips.selectors';
+import { selectPhotos } from '../../store/photos/photos.selector';
+import { selectPlaces } from '../../store/places/places.selector';
+// actions
+import { fetchTipsAsync } from '../../store/tips/tips.action';
+// styles
 import './place-details.styles.scss';
 
 const PlaceDetails = () => {
 
-  // getting info from Context
-  const { places, photos, tips, setTips } = useContext(PlacesContext)
+  const dispatch = useDispatch();
+  const [isTipsShown, setIsTipsShown] = useState(false);
+  const [placeTips, setPlaceTips] = useState([]);
 
   // getting fsq_id from path
   const { fsq_id } = useParams();
 
-  // getting photo
-  const photoObject = photos.find(photo => photo.fsq_id === fsq_id);
+  const { tips, isTipsLoading, isTipsLoaded } = useSelector(selectTips);
+  const { isLoaded, photos } = useSelector(selectPhotos);
+  const places = useSelector(selectPlaces);
+  const photoLink = photos[fsq_id]
+  const place = places.find(place => place.fsq_id === fsq_id);
 
   // getting placeDetails
-  const placeDetails = places.find(place => place.fsq_id === fsq_id);
-  const { categories, location, name, geocodes } = placeDetails;
+  const { categories, location, name, geocodes } = place;
 
   // go to google map handler
   const goToMap = () => {
     const linkToMap = `https://maps.google.com/?q=${geocodes && geocodes.main.latitude},${geocodes && geocodes.main.longitude}`;
     return window.open(linkToMap)
   }
-
-
-  // CHANGE THIS TO useQuery
-  const getTipsHandler = async () => {
-    const placeTips = await getPlaceTips(fsq_id);
-    setTips(placeTips);
+  // searches for the tips in store
+  // if tips found - setPlaceTips
+  // if not - dispatches fetchTipsAsync
+  const getTips = () => {
+    const placeTips = tips.find(tip => tip.fsq_id === fsq_id);
+    if (placeTips) {
+      setPlaceTips(placeTips.placeTips)
+    } else {
+      dispatch(fetchTipsAsync(fsq_id))
+    }
   }
+
+  // setPlaceTips
   useEffect(() => {
-    getTipsHandler();
-  }, [])
+    const placeTips = tips.find(tip => tip.fsq_id === fsq_id);
+    if (placeTips) {
+      setPlaceTips(placeTips.placeTips)
+    }
+  }, [isTipsLoaded])
+
+  // hides tips
+  const hideTips = () => {
+    setIsTipsShown(false)
+  };
+  // shows tips
+  const showTips = () => {
+    setIsTipsShown(true)
+  };
+  // "Show Tips" button handler
+  const onShowTipsHandler = () => {
+    showTips();
+    getTips();
+  }
 
   return (
     <div className="place-details-container">
       <div className="place-photo-container">
-        <img src={photoObject ? photoObject.link : 'https://media3.giphy.com/media/3oEjI6SIIHBdRxXI40/200w.gif?cid=82a1493bn6v1zdg28ctya2hn5avly5gr2bbk21x8fjmwcysf&rid=200w.gif&ct=g'} alt="" />
+        <img src={isLoaded ? photoLink : <Spinner />} alt="" />
       </div>
       <div className="place-details-text-container">
         <h2 className="place-name">{name}</h2>
-        <span className='category'>CATEGORY: {placeDetails && categories.map(category => category.name).join(' / ')}</span>
+        <span className='category'>CATEGORY: {place && categories.map(category => category.name).join(' / ')}</span>
         <br />
-        <span className='address'>ADDRESS: {placeDetails && location.formatted_address}</span>
+        <span className='address'>ADDRESS: {place && location.formatted_address}</span>
 
         <div className='location' >
           <Button type='submit' children={'See on map'} buttonType='inverted' onClick={goToMap} />
-
+          {isTipsShown ? (
+            <Button type='submit' children={'Hide Tips'} onClick={hideTips} />
+          ) : (
+            <Button type='submit' children={'Show Tips'} buttonType='inverted' onClick={onShowTipsHandler} />
+          )}
         </div>
         <div className='tips-container'>
           <h3>Tips from visitors</h3>
-          {tips && tips.map(tip => <Tip text={tip.text} key={tip.id} />)}
+          {isTipsLoading && isTipsShown ? <Spinner /> : (placeTips && isTipsShown && placeTips.map(tip => <Tip text={tip.text} key={tip.id} />))}
         </div>
       </div>
     </div >
@@ -67,12 +101,3 @@ const PlaceDetails = () => {
 };
 
 export default PlaceDetails;
-
-
-
-/*
-To create a google map location
-
-https://maps.google.com/?q=<lat>,<lng>
-
-*/

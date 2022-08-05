@@ -1,53 +1,21 @@
-// react
-import { useContext } from 'react';
-
-// context
-import { PlacesContext } from '../../contexts/places.context';
-
-import './forecast.styles.scss';
+// react, redux
+import { useSelector } from 'react-redux';
+// store selectors
+import { selectForecast } from '../../store/forecast/forecast.selector';
+// components
+import Spinner from '../../components/spinner/spinner.component'
+import ForecastContainer from './forecast.container';
 
 const Forecast = () => {
+  const { forecast, isLoaded, isLoading, error } = useSelector(selectForecast); // select forecast from the store
 
-  const { forecast } = useContext(PlacesContext);
-
-  // to check if forecast ready to be rendered
-  const isForecast = () => {
-    return Object.keys(forecast).length !== 0;
-  }
-
-  // Convert original value in Kelvins to Celsius
-  const kelvinToCelsius = (K) => ((K - 273.15)).toFixed(0);
-  const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const currentDay = weekDays[(new Date()).getDay()]
-
-  return (
-    <>
-      {isForecast() && (<div className='forecast-container'>
-
-        <div className="weather-main-info">
-          <h2>{currentDay}</h2>
-          <h2>{forecast.weather[0].description.toUpperCase()}</h2>
-        </div>
-        <div className='weather-container'>
-          <div className='icon-container'>
-            <img src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@4x.png`} alt='' />
-          </div>
-          <div className="temperature-container">
-            <h2>{kelvinToCelsius(forecast.main.temp)}&deg;C</h2>
-          </div>
-          <div className='additional-data-container'>
-            <span>Max temperature: {kelvinToCelsius(forecast.main.temp_max)}&deg;C </span>
-            <span>Max temperature: {kelvinToCelsius(forecast.main.temp_min)}&deg;C </span>
-            <span>Humidity: {forecast.main.humidity} &#37; </span>
-            <span>Wind: {forecast.wind.speed} km/h </span>
-          </div>
-        </div>
-      </div>
-      )
-      }
-    </>
-  )
-
+  // if forecast is ready to render returns ForecastContainer
+  // if there is no forecast in state returns nothing
+  // if forecast is loading shows Spinner
+  if (isLoaded && !isLoading && forecast !== undefined) {
+    return <ForecastContainer forecast={forecast} />
+  } else if (!isLoaded && !isLoading && !error) { return <></> }
+  else if (isLoading) { return <Spinner /> } else if (error) { return <><h1>Forecast error {error}</h1></> }
 
 };
 

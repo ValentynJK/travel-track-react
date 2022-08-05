@@ -3,7 +3,7 @@ import './forecast.styles.scss';
 
 const ForecastContainer = ({ forecast }) => {
 
-  // Convert original value in Kelvins to Celsius
+  // convert original value in Kelvins to Celsius
   const kelvinToCelsius = (K) => ((K - 273.15)).toFixed(0);
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const currentDay = weekDays[(new Date()).getDay()]
@@ -32,6 +32,5 @@ const ForecastContainer = ({ forecast }) => {
     </div>
     ))
 };
-
 
 export default ForecastContainer;

@@ -19,8 +19,7 @@
     "reselect": "^4.1.6",
     "sass": "^1.53.0",
     "styled-component": "^2.8.0",
-    "styled-components": "^5.3.5",
-    "web-vitals": "^2.1.4"
+    "styled-components": "^5.3.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,5 +45,8 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "devDependencies": {
+    "web-vitals": "^2.1.4"
+  }
 }

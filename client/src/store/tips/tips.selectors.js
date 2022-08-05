@@ -1,0 +1,1 @@
+export const selectTips = (store) => store.tips

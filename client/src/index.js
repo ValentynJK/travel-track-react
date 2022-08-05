@@ -9,8 +9,6 @@ import { Provider } from 'react-redux'; // redux provider
 import { PersistGate } from 'redux-persist/integration/react'; // redux-persist provider
 // components
 import App from './App';
-// context provider
-import { PlacesProvider } from './contexts/places.context';
 // general styles
 import './index.css';
 
@@ -20,9 +18,7 @@ root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <BrowserRouter>
-          <PlacesProvider>
-            <App />
-          </PlacesProvider>
+          <App />
         </BrowserRouter>
       </PersistGate>
     </Provider>

@@ -2,7 +2,7 @@
 
 Welcome to the Travel-Track application 
 
-This is API application which consumes [Foursquare] (https://developer.foursquare.com/) and [OpenWeather] (https://openweathermap.org/) APIs.
+This is API application which consumes [Foursquare](https://developer.foursquare.com/) and [OpenWeather](https://openweathermap.org/) APIs.
 
 ### Basic functionality:
 

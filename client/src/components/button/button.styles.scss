@@ -1,6 +1,6 @@
 .button-container {
   min-width: 270px;
-
+  margin: 20px 0;
   // width: auto;
   height: 50px;
   letter-spacing: 0.5px;
@@ -33,6 +33,18 @@
       border: none;
     }
   }
+
+  &.map {
+    background-color: #4285F4;
+    color: black;
+    border: 1px solid black;
+
+    &:hover {
+      background-color: #F4B400;
+
+    }
+  }
+
 
   &.inverted {
     background-color: white;

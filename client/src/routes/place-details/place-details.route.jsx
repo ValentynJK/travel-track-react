@@ -84,7 +84,7 @@ const PlaceDetails = () => {
         <span className='address'>ADDRESS: {place && location.formatted_address}</span>
 
         <div className='location' >
-          <Button type='submit' children={'See on map'} buttonType='inverted' onClick={goToMap} />
+          <Button type='submit' children={'See on map'} buttonType='map' onClick={goToMap} />
           {isTipsShown ? (
             <Button type='submit' children={'Hide Tips'} onClick={hideTips} />
           ) : (

@@ -48,8 +48,9 @@ app.post('/places_api', async (request, response) => {
   const req = await request.body;
   const places = await getPlaces(req.cityName, req.category, options);
   console.log('places API called'); // to check during test
-  response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  response.sendFile(path.join(__dirname, '../client/build/index.html'))
   response.json(places);
+  // response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
 // api to get forecast 
@@ -57,8 +58,9 @@ app.post('/forecast_api', async (request, response) => {
   const city = await request.body.cityName;
   const forecast = await getForecast(city, API_WEATHER);
   console.log('forecast API called'); // to check during test
-  response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+  response.sendFile(path.join(__dirname, '../client/build/index.html'))
   response.json(forecast)
+  // response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 })
 
 // api request to get photos
@@ -66,8 +68,9 @@ app.post('/photo_api', async (request, response) => {
   const fsq_id = await request.body.fsq_id;
   const photoLink = await getPhoto(fsq_id, options);
   console.log('photo_api called'); // to check during test
-  response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
+  response.sendFile(path.join(__dirname, '../client/build/index.html'))
   response.json(photoLink);
+  // response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
 // api request to get place details
@@ -75,8 +78,9 @@ app.post('/place_api', async (request, response) => {
   const fsq_id = await request.body.fsq_id;
   const placeDetails = await getPlaceDetails(fsq_id, options);
   console.log('Place API called'); // to check during test
-  response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
+  response.sendFile(path.join(__dirname, '../client/build/index.html'))
   response.json(placeDetails);
+  // response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
 
 // api request to get place details
@@ -84,9 +88,7 @@ app.post('/tips_api', async (request, response) => {
   const fsq_id = await request.body.fsq_id;
   const placeTips = await getPlaceTips(fsq_id, options);
   console.log('tips API called'); // to check during test
-  response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
+  response.sendFile(path.join(__dirname, '../client/build/index.html'))
   response.json(placeTips);
+  // response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })
-
-
-

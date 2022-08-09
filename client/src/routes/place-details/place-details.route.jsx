@@ -26,7 +26,7 @@ const PlaceDetails = () => {
 
   const { tips, isTipsLoading, isTipsLoaded } = useSelector(selectTips);
   const { isLoaded, photos } = useSelector(selectPhotos);
-  const places = useSelector(selectPlaces);
+  const { places } = useSelector(selectPlaces);
   const photoLink = photos[fsq_id]
   const place = places.find(place => place.fsq_id === fsq_id);
 

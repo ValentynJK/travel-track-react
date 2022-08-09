@@ -1,6 +1,7 @@
-// react, redux
+// react, redux, react-route-dom
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 // components
 import InputForm from '../input-form/input-form.component';
 import Button from '../button/button.component';
@@ -21,6 +22,7 @@ const defaultInputFields = {
 const Search = () => {
 
   const dispatch = useDispatch(); // initializes dispatch method
+  const navigate = useNavigate();
 
   // handle input fields
   const [inputField, setInputField] = useState(defaultInputFields);
@@ -39,14 +41,16 @@ const Search = () => {
     dispatch(clearPhotos())
     dispatch(fetchPlacesAsync(cityName, category))
     dispatch(fetchForecastAsync(cityName));
+    navigate(`${cityName}`)
   }
 
   return (
     <div className="search">
+      <h1>Find a place to visit!</h1>
       <div className="search-container">
         <InputForm
           label='City'
-          type='text'
+          type='search'
           required
           onChange={handleChange}
           name='cityName'

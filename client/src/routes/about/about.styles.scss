@@ -1,0 +1,22 @@
+.about-container {
+  min-width: 270px;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  align-items: flex-start;
+  flex-flow: column nowrap;
+
+  p {
+    font-size: 1.1rem;
+  }
+
+  ul {
+    text-align: start;
+    list-style-type: circle;
+  }
+
+  span {
+    font-size: 1.2rem;
+  }
+}

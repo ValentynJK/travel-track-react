@@ -26,10 +26,6 @@ app.use(express.json({ limit: '1mb' })); // converts request data to json object
 // have node serve the files for build react app
 app.use(express.static(path.resolve(__dirname, '../client/build')))
 
-app.get('/api', (req, res) => {
-  res.json({ message: "Hello, welcome to the Travel Track App!" })
-})
-
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
@@ -91,6 +87,7 @@ app.post('/tips_api', async (request, response) => {
   response.json(placeTips);
 })
 
+// redirect
 app.get('/*', async (request, response) => {
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'))
 })

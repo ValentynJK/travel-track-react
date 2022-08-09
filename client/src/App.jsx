@@ -1,34 +1,29 @@
 // react
 import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-
 // components
-import HomePage from './routes/home-page/home-page.route';
 import PlaceDetails from './routes/place-details/place-details.route'
-
+import Navigation from './routes/navigation/navigation.route';
+import SearchResult from './routes/search-result/search-result.route';
+import Search from './components/search/search.component';
+import About from './routes/about/about.route'
 // style
 import './App.css';
 
 function App() {
 
-  // Check from server
-  const [data, setData] = useState(null);
-
-  // updating server greeting after app update
-  useEffect(() => {
-    fetch('/api').then((res) => res.json()).then((data) => setData(data.message))
-  }, []);
-
   return (
-    <div className="App">
-      <p>
-        {!data ? "Loading..." : data.toUpperCase()}
-      </p>
+    <div className="App" >
       <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path="/:fsq_id" element={<PlaceDetails />} />
-      </Routes>
-    </div>
+        <Route path='/' element={<Navigation />}>
+          <Route index element={<Search />} />
+          <Route path=':city' element={<SearchResult />} />
+          <Route path=':city/:fsq_id' element={<PlaceDetails />} />
+          <Route path='/about' element={<About />} />
+        </Route>
+      </Routes >
+    </div >
+
   );
 }
 

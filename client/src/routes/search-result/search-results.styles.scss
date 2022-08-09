@@ -1,20 +1,17 @@
-.search-container {
-  margin: 0 auto;
+.greeting-container {
   min-width: 300px;
   max-width: 500px;
+  margin: 0 auto;
   display: flex;
-  flex-flow: column nowrap;
-  padding: 60px 20px;
-  border: 1px solid rgba(99, 99, 99, 0.2);
+  justify-content: center;
+  align-items: center;
+  height: 5rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-}
 
-.search {
-  h1 {
+  h2 {
     color: white;
     text-transform: uppercase;
     letter-spacing: 3px;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-
   }
 }

@@ -1,1 +1,1 @@
-export const selectPlaces = (state) => state.places.places;
+export const selectPlaces = (state) => state.places;

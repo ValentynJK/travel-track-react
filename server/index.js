@@ -42,6 +42,7 @@ const options = {
 // api to get places array
 app.post('/places_api', async (request, response) => {
   const req = await request.body;
+  console.log(req)
   const places = await getPlaces(req.cityName, req.category, options);
   console.log('places API called'); // to check during test
   response.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));

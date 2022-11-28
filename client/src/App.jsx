@@ -7,6 +7,7 @@ import Navigation from './routes/navigation/navigation.route';
 import SearchResult from './routes/search-result/search-result.route';
 import Search from './components/search/search.component';
 import About from './routes/about/about.route'
+import DrawerAppBar from './routes/app-bar/app-bar.route'
 // style
 import './App.css';
 
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <div className="App" >
+      <DrawerAppBar />
       <Routes>
         <Route path='/' element={<Navigation />}>
           <Route index element={<Search />} />

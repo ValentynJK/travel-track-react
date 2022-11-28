@@ -1,5 +1,5 @@
 ## Travel-Track application
-[Live page](https://travel-track-react.herokuapp.com/)
+[Live page](https://travel-track.onrender.com/)
 
 Welcome to the Travel-Track application 
 
@@ -19,4 +19,4 @@ This is API application which consumes [Foursquare](https://developer.foursquare
 * Redux-Thunk
 * SASS
 * Express
-* Heroku
+* Render.com
